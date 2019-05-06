@@ -1,4 +1,4 @@
-# Exported from code.google.com/p/shardbatis
+Exported from code.google.com/p/shardbatis
 
 #shardbatis2.x使用指南
 ###运行环境
