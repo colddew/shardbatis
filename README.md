@@ -1,3 +1,5 @@
+# Exported from code.google.com/p/shardbatis
+
 #shardbatis2.x使用指南
 ###运行环境
 jdk6.0+:shardbatis使用JDK6.0编译。也可以使用JDK5.0编译
