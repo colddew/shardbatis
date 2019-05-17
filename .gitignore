@@ -1,0 +1,50 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### others ###
+.#*
+*#
+*~
+/code
+/.classpath
+/.project
+/.settings
+.metadata
+bin
+lib/
+target
+build.log
+_site/
+.*.md.html
+manifest.yml
+MANIFEST.MF
+settings.xml
+#*.jar
+.DS_Store
+**/test-output/
+.gradle/
+**/build/
+**/out/
+**/logs/

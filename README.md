@@ -1,14 +1,19 @@
 `Non-Intrusive Mybatis Sharding Plugin, exported from code.google.com/p/shardbatis`
 
-#shardbatis2.x使用指南
-###运行环境
+# shardbatis2.x使用指南
+
+### 运行环境
 jdk6.0+:shardbatis使用JDK6.0编译。也可以使用JDK5.0编译
 mybatis3.0+
-###1.配置
+
+### 1.配置
+
 添加sharding配置
+
 新建一个xml文件,例如：shard_config.xml
 
-	<?xml version="1.0" encoding="UTF-8"?>
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN" "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
 	<shardingConfig>
         <!--
@@ -30,20 +35,25 @@ mybatis3.0+
         -->
         <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>      
 	</shardingConfig>
-	
+```
+
 shard_config.xml必须保存在应用的classpath中
 
 在mybatis配置文件中添加插件配置
 
+```xml
 	<plugins>
         <plugin interceptor="com.google.code.shardbatis.plugin.ShardPlugin">
                 <property name="shardingConfig" value="shard_config.xml"/>
         </plugin>
-	</plugins> 
-###2.实现自己的sharding策略
+	</plugins>
+```
+
+### 2.实现自己的sharding策略
 
 实现一个简单的接口即可
 
+```java
 	/**
  	* 分表策略接口
  	* @author sean.he
@@ -59,15 +69,19 @@ shard_config.xml必须保存在应用的classpath中
          */
         String getTargetTableName(String baseTableName,Object params,String mapperId);
 	}
-	
-可以参考
-	
-	com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl
+```
 
-###3.代码中使用shardbatis
+可以参考
+
+```java
+	com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl
+```
+
+### 3.代码中使用shardbatis
 
 因为shardbatis2.0使用插件方式对mybatis功能进行增强，因此使用配置了shardbatis的mybatis3和使用原生的mybatis3没有区别
 
+```java
 	SqlSession session = sqlSessionFactory.openSession();
 	try {
         AppTestMapper mapper = session.getMapper(AppTestMapper.class);
@@ -76,17 +90,19 @@ shard_config.xml必须保存在应用的classpath中
 	} finally {
         session.close();
 	}
+```
 
-###<font color="red">使用注意事项</font>
-
+### <font color="red">使用注意事项</font>
 
 2.0版本中insert update delete 语句中的子查询语句中的表不支持sharding(不好意思太拗口了-_-!)
 select语句中如果进行多表关联，请务必为每个表名加上别名
 
-	例如原始sql语句：SELECT a.* FROM ANTIQUES a,ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id
-	经过转换后的结果可能为：SELECT a.* FROM ANTIQUES_0 AS a, ANTIQUEOWNERS_1 AS b, mytable_1 AS c WHERE a.id = b.id AND b.id = c.id	
+	例如原始sql语句：`SELECT a.* FROM ANTIQUES a,ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id`
+	经过转换后的结果可能为：`SELECT a.* FROM ANTIQUES_0 AS a, ANTIQUEOWNERS_1 AS b, mytable_1 AS c WHERE a.id = b.id AND b.id = c.id`	
+
 目前已经支持了大部分的sql语句的解析，已经测试通过的语句可以查看测试用例：
 
+```sql
 	select * from test_table1
 	select * from test_table1 where col_1='123'
 	select * from test_table1 where col_1='123' and col_2=8
@@ -115,10 +131,15 @@ select语句中如果进行多表关联，请务必为每个表名加上别名
 	delete from test_table2 where id in (?,?,?,?,?,?) and col_1 is not null
 	INSERT INTO test_table1 VALUES (21, 01, 'Ottoman', ?,?)
 	INSERT INTO test_table1 (BUYERID, SELLERID, ITEM) VALUES (01, 21, ?)
+```
+
 可能有些sql语句没有出现在测试用例里，但是相信基本上常用的查询sql shardbatis解析都没有问题，因为shardbatis对sql的解析是基于jsqlparser
-###下载、安装
+
+### 下载、安装
+
 在maven中使用（推荐）
-	
+
+```xml
 	<!-- 新增远程仓库设置 -->
 	<repository>
       <id>shardbaits</id>
@@ -135,5 +156,6 @@ select语句中如果进行多表关联，请务必为每个表名加上别名
         <artifactId>shardbatis</artifactId>
         <version>2.0.0B</version>
 	</dependency>
-	
+```
+
 手工添加到项目classpath中
