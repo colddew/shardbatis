@@ -16,24 +16,24 @@ mybatis3.0+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN" "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
 <shardingConfig>
-        <!--
-                ignoreList可选配置
-                ignoreList配置的mapperId会被分表参加忽略解析,不会对sql进行修改
-        -->
-        <ignoreList>
-                <value>com.google.code.shardbatis.test.mapper.AppTestMapper.insertNoShard</value>
-        </ignoreList>
-        <!-- 
-                parseList可选配置
-                如果配置了parseList,只有在parseList范围内并且不再ignoreList内的sql才会被解析和修改
-        -->
-        <parseList>
-                <value>com.google.code.shardbatis.test.mapper.AppTestMapper.insert</value>
-        </parseList>
-        <!-- 
-                配置分表策略
-        -->
-        <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>      
+    <!--
+        ignoreList可选配置
+        ignoreList配置的mapperId会被分表参加忽略解析,不会对sql进行修改
+    -->
+    <ignoreList>
+        <value>com.google.code.shardbatis.test.mapper.AppTestMapper.insertNoShard</value>
+    </ignoreList>
+    <!-- 
+        parseList可选配置
+        如果配置了parseList,只有在parseList范围内并且不再ignoreList内的sql才会被解析和修改
+    -->
+    <parseList>
+        <value>com.google.code.shardbatis.test.mapper.AppTestMapper.insert</value>
+    </parseList>
+    <!-- 
+        配置分表策略
+    -->
+    <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>
 </shardingConfig>
 ```
 
@@ -43,9 +43,9 @@ shard_config.xml必须保存在应用的classpath中
 
 ```xml
 <plugins>
-        <plugin interceptor="com.google.code.shardbatis.plugin.ShardPlugin">
-                <property name="shardingConfig" value="shard_config.xml"/>
-        </plugin>
+    <plugin interceptor="com.google.code.shardbatis.plugin.ShardPlugin">
+        <property name="shardingConfig" value="shard_config.xml"/>
+    </plugin>
 </plugins>
 ```
 
@@ -88,7 +88,7 @@ shard_config.xml必须保存在应用的classpath中
 		mapper.insert(testDO);
 		session.commit();
 	} finally {
-        	session.close();
+        session.close();
 	}
 ```
 
@@ -142,19 +142,19 @@ select语句中如果进行多表关联，请务必为每个表名加上别名
 ```xml
 <!-- 新增远程仓库设置 -->
 <repository>
-      <id>shardbaits</id>
-      <name>shardbaits repository</name>
-      <url>http://shardbatis.googlecode.com/svn/trunk/repository</url>
-      <snapshots>
-            <enabled>false</enabled>
-      </snapshots>
+    <id>shardbaits</id>
+    <name>shardbaits repository</name>
+    <url>http://shardbatis.googlecode.com/svn/trunk/repository</url>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
 </repository>
 
 <!-- 声明依赖 -->
 <dependency>
-      <groupId>org.shardbatis</groupId>
-      <artifactId>shardbatis</artifactId>
-      <version>2.0.0B</version>
+    <groupId>org.shardbatis</groupId>
+    <artifactId>shardbatis</artifactId>
+    <version>2.0.0B</version>
 </dependency>
 ```
 
