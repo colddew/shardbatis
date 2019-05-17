@@ -1,4 +1,4 @@
-### `Non-Intrusive Mybatis Sharding Plugin, exported from code.google.com/p/shardbatis`
+`Non-Intrusive Mybatis Sharding Plugin, exported from code.google.com/p/shardbatis`
 
 # shardbatis2.x使用指南
 
@@ -13,9 +13,9 @@ mybatis3.0+
 新建一个xml文件,例如：shard_config.xml
 
 ```xml
-    <?xml version="1.0" encoding="UTF-8"?>
-	<!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN" "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
-	<shardingConfig>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN" "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
+<shardingConfig>
         <!--
                 ignoreList可选配置
                 ignoreList配置的mapperId会被分表参加忽略解析,不会对sql进行修改
@@ -34,7 +34,7 @@ mybatis3.0+
                 配置分表策略
         -->
         <strategy tableName="APP_TEST" strategyClass="com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl"/>      
-	</shardingConfig>
+</shardingConfig>
 ```
 
 shard_config.xml必须保存在应用的classpath中
@@ -42,11 +42,11 @@ shard_config.xml必须保存在应用的classpath中
 在mybatis配置文件中添加插件配置
 
 ```xml
-	<plugins>
+<plugins>
         <plugin interceptor="com.google.code.shardbatis.plugin.ShardPlugin">
                 <property name="shardingConfig" value="shard_config.xml"/>
         </plugin>
-	</plugins>
+</plugins>
 ```
 
 ### 2.实现自己的sharding策略
@@ -60,14 +60,14 @@ shard_config.xml必须保存在应用的classpath中
  	*
  	*/
 	public interface ShardStrategy {
-        /**
-         * 得到实际表名
-         * @param baseTableName 逻辑表名,一般是没有前缀或者是后缀的表名
-         * @param params mybatis执行某个statement时使用的参数
-         * @param mapperId mybatis配置的statement id
-         * @return
-         */
-        String getTargetTableName(String baseTableName,Object params,String mapperId);
+		/**
+		 * 得到实际表名
+		 * @param baseTableName 逻辑表名,一般是没有前缀或者是后缀的表名
+		 * @param params mybatis执行某个statement时使用的参数
+		 * @param mapperId mybatis配置的statement id
+		 * @return
+		 */
+		String getTargetTableName(String baseTableName,Object params,String mapperId);
 	}
 ```
 
@@ -84,11 +84,11 @@ shard_config.xml必须保存在应用的classpath中
 ```java
 	SqlSession session = sqlSessionFactory.openSession();
 	try {
-        AppTestMapper mapper = session.getMapper(AppTestMapper.class);
-  	mapper.insert(testDO);
-        session.commit();
+		AppTestMapper mapper = session.getMapper(AppTestMapper.class);
+		mapper.insert(testDO);
+		session.commit();
 	} finally {
-        session.close();
+        	session.close();
 	}
 ```
 
@@ -140,22 +140,22 @@ select语句中如果进行多表关联，请务必为每个表名加上别名
 在maven中使用（推荐）
 
 ```xml
-	<!-- 新增远程仓库设置 -->
-	<repository>
+<!-- 新增远程仓库设置 -->
+<repository>
       <id>shardbaits</id>
-        <name>shardbaits repository</name>
-        <url>http://shardbatis.googlecode.com/svn/trunk/repository</url>
-        <snapshots>
-                <enabled>false</enabled>
-        </snapshots>
-	</repository>
+      <name>shardbaits repository</name>
+      <url>http://shardbatis.googlecode.com/svn/trunk/repository</url>
+      <snapshots>
+            <enabled>false</enabled>
+      </snapshots>
+</repository>
 
-	<!-- 声明依赖 -->
-	<dependency>
-        <groupId>org.shardbatis</groupId>
-        <artifactId>shardbatis</artifactId>
-        <version>2.0.0B</version>
-	</dependency>
+<!-- 声明依赖 -->
+<dependency>
+      <groupId>org.shardbatis</groupId>
+      <artifactId>shardbatis</artifactId>
+      <version>2.0.0B</version>
+</dependency>
 ```
 
 手工添加到项目classpath中
