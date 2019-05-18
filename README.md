@@ -1,4 +1,4 @@
-`Non-Intrusive Mybatis Sharding Plugin, source from [code.google.com/p/shardbatis](https://code.google.com/archive/p/shardbatis/)`
+Non-Intrusive Mybatis Sharding Plugin, source from [code.google.com/p/shardbatis](https://code.google.com/archive/p/shardbatis/)
 
 What is shardbatis?
 
