@@ -201,3 +201,7 @@ delete from test_table2 where id in (?,?,?,?,?,?) and col_1 is not null
 INSERT INTO test_table1 VALUES (21, 01, 'Ottoman', ?,?)
 INSERT INTO test_table1 (BUYERID, SELLERID, ITEM) VALUES (01, 21, ?)
 ```
+
+### 未来计划
+1）升级依赖，替换jsqlparser本地依赖  
+2）发布jar包到maven公共仓库
