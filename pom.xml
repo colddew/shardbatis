@@ -120,7 +120,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <!--初始化数据库Schema及测试数据的profile, 以-Pinitdb激活 command:mvn initialize -Pinitdb-->
         <profile>
