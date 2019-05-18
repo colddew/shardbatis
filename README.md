@@ -28,7 +28,7 @@ mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/sh
     <version>2.0.0B</version>
 </dependency>
 
-<!-- 由于googlecode已关闭远程仓库已不可用 -->
+<!-- 由于googlecode已关闭远程仓库，已不可用 -->
 <repository>
     <id>shardbaits</id>
     <name>shardbaits repository</name>
