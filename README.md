@@ -164,12 +164,12 @@ try {
 
 #### 使用注意事项
 
-2.0版本中inser、update、delete语句中的子查询语句中的表不支持sharding，select语句中如果进行多表关联，请务必为每个表名加上别名
+2.0版本中inser、update、delete语句中的子查询语句中的表不支持sharding
 
-例如原始sql语句：`SELECT a.* FROM ANTIQUES a, ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id`
+select语句中如果进行多表关联，请务必为每个表名加上别名，例如原始sql语句：`SELECT a.* FROM ANTIQUES a, ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id`
 经过转换后的结果可能为：`SELECT a.* FROM ANTIQUES_0 AS a, ANTIQUEOWNERS_1 AS b, mytable_1 AS c WHERE a.id = b.id AND b.id = c.id`	
 
-shardbatis对sql的解析是基于jsqlparser的，目前已经支持了大部分的sql语句的解析，已经测试通过的语句可以查看测试用例：
+shardbatis对sql的解析基于jsqlparser，目前已经支持大部分sql语句的解析，已经测试通过的语句可以查看测试用例：
 
 ```sql
 select * from test_table1
