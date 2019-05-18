@@ -14,8 +14,10 @@ mybatis 3.x
 
 git clone https://github.com/colddew/shardbatis.git
 
-将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库
+将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库  
+```
 mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/shardbatis-2.0.0B.jar -DgroupId=org.shardbatis -DartifactId=shardbatis -Dversion=2.0.0B -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
+```
 
 ```xml
 <!-- pom中引入依赖 -->
