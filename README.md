@@ -14,7 +14,8 @@ mybatis 3.x
 
 git clone https://github.com/colddew/shardbatis.git
 
-将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库  
+将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库
+
 ```
 mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/shardbatis-2.0.0B.jar -DgroupId=org.shardbatis -DartifactId=shardbatis -Dversion=2.0.0B -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 ```
@@ -163,14 +164,12 @@ try {
 
 #### 使用注意事项
 
-2.0版本中inser、update、delete语句中的子查询语句中的表不支持sharding  
-
-select语句中如果进行多表关联，请务必为每个表名加上别名
+2.0版本中inser、update、delete语句中的子查询语句中的表不支持sharding，select语句中如果进行多表关联，请务必为每个表名加上别名
 
 例如原始sql语句：`SELECT a.* FROM ANTIQUES a, ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id`
 经过转换后的结果可能为：`SELECT a.* FROM ANTIQUES_0 AS a, ANTIQUEOWNERS_1 AS b, mytable_1 AS c WHERE a.id = b.id AND b.id = c.id`	
 
-目前已经支持了大部分的sql语句的解析，已经测试通过的语句可以查看测试用例：
+shardbatis对sql的解析是基于jsqlparser的，目前已经支持了大部分的sql语句的解析，已经测试通过的语句可以查看测试用例：
 
 ```sql
 select * from test_table1
@@ -202,5 +201,3 @@ delete from test_table2 where id in (?,?,?,?,?,?) and col_1 is not null
 INSERT INTO test_table1 VALUES (21, 01, 'Ottoman', ?,?)
 INSERT INTO test_table1 (BUYERID, SELLERID, ITEM) VALUES (01, 21, ?)
 ```
-
-可能有些sql语句没有出现在测试用例里，但是相信基本上常用的查询sq，shardbatis解析都没有问题，因为shardbatis对sql的解析是基于jsqlparser
