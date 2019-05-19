@@ -95,7 +95,7 @@ public class DatasourceConfig {
     private Interceptor getShardPlugin() {
     	
     	Properties properties = new Properties();
-    	properties.setProperty("shardingConfig", "shardConfig.xml");
+    	properties.setProperty("shardingConfig", "shard_config.xml");
     	
     	ShardPlugin shardPlugin = new ShardPlugin();
     	shardPlugin.setProperties(properties);
@@ -201,7 +201,10 @@ delete from test_table2 where id in (?,?,?,?,?,?) and col_1 is not null
 INSERT INTO test_table1 VALUES (21, 01, 'Ottoman', ?,?)
 INSERT INTO test_table1 (BUYERID, SELLERID, ITEM) VALUES (01, 21, ?)
 ```
+<<<<<<< HEAD
 
 ### 未来计划
 1）升级依赖，替换jsqlparser本地依赖  
 2）发布jar包到maven公共仓库
+=======
+>>>>>>> master
