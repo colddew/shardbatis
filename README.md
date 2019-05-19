@@ -95,7 +95,7 @@ public class DatasourceConfig {
     private Interceptor getShardPlugin() {
     	
     	Properties properties = new Properties();
-    	properties.setProperty("shardingConfig", "shardConfig.xml");
+    	properties.setProperty("shardingConfig", "shard_config.xml");
     	
     	ShardPlugin shardPlugin = new ShardPlugin();
     	shardPlugin.setProperties(properties);
