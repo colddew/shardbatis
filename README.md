@@ -226,5 +226,5 @@ curl -O http://www.h2database.com/h2-2019-03-13.zip
 `mvn clean test`
 
 ### 未来计划
-1）升级依赖，替换jsqlparser本地依赖  
+1）~~升级依，替换jsqlparser本地依赖~~  
 2）发布jar包到maven公共仓库
