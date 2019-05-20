@@ -8,24 +8,33 @@ What is shardbatis?
 
 ### 运行环境
 jdk 8.0
-mybatis 3.x
+mybatis 3.5.1
 
 ### 下载 & 安装
 
 git clone https://github.com/colddew/shardbatis.git
 
-将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库
+a）2.0.1以后的版本直接引入maven依赖即可
+
+```xml
+<dependency>
+    <groupId>org.shardbatis</groupId>
+    <artifactId>shardbatis</artifactId>
+    <version>2.0.1</version>
+</dependency>
+```
+
+b）2.0.0B及以前的版本需要将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库
 
 ```
 mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/shardbatis-2.0.0B.jar -DgroupId=org.shardbatis -DartifactId=shardbatis -Dversion=2.0.0B -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 ```
 
 ```xml
-<!-- pom中引入依赖 -->
 <dependency>
     <groupId>org.shardbatis</groupId>
     <artifactId>shardbatis</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.0.0B</version>
 </dependency>
 
 <!-- 由于googlecode已关闭远程仓库，已不可用 -->
@@ -41,22 +50,20 @@ mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/sh
 
 ### 配置
 
-在应用的classpath中添加sharding配置文件shard_config.xml
+在项目的classpath中添加sharding配置文件shard_config.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE shardingConfig PUBLIC "-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN" "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd">
 <shardingConfig>
     <!--
-        ignoreList可选配置
-        ignoreList配置的mapperId会被分表参加忽略解析,不会对sql进行修改
+        ignoreList可选配：ignoreList配置的mapperId会被分表参加忽略解析,不会对sql进行修改
     -->
     <ignoreList>
         <value>com.google.code.shardbatis.test.mapper.AppTestMapper.insertNoShard</value>
     </ignoreList>
     <!-- 
-        parseList可选配置
-        如果配置了parseList,只有在parseList范围内并且不再ignoreList内的sql才会被解析和修改
+        parseList可选配置：如果配置了parseList,只有在parseList范围内并且不再ignoreList内的sql才会被解析和修改
     -->
     <parseList>
         <value>com.google.code.shardbatis.test.mapper.AppTestMapper.insert</value>
@@ -68,7 +75,7 @@ mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/sh
 </shardingConfig>
 ```
 
-1）在dataSource中添加插件配置
+a）在代码中添加插件配置
 
 ```java
 @Configuration
@@ -105,7 +112,7 @@ public class DatasourceConfig {
 }
 ```
 
-2）或者在mybatis配置文件中添加插件配置
+b）或者在mybatis配置文件中添加插件配置
 
 ```xml
 <plugins>
@@ -129,7 +136,7 @@ public interface ShardStrategy {
      * @param baseTableName 逻辑表名,一般是没有前缀或者是后缀的表名
      * @param params mybatis执行某个statement时使用的参数
      * @param mapperId mybatis配置的statement id
-     * @return 表名
+     * @return 分表表名
      */
     String getTargetTableName(String baseTableName,Object params,String mapperId);
 }
@@ -142,14 +149,14 @@ public class XXXShardStrategy implements ShardStrategy {
 	}
 	
 	private String getTableNameSuffix(Object params) {
-		// 例如可以根据用户id求余或者hash获取表名后缀
+		// 可以根据用户id求余或者hash等策略获取分表表名
 	}
 }
 ```
 
 ### 代码中使用shardbatis
 
-因为shardbatis2.0使用插件方式对mybatis功能进行增强，代码无侵入，因此使用配置了shardbatis的mybatis3和使用原生的mybatis3没有区别
+因为shardbatis2.x使用插件方式对mybatis功能进行增强，代码无侵入，因此使用配置了shardbatis的mybatis3和使用原生的mybatis3没有区别
 
 ```java
 SqlSession session = sqlSessionFactory.openSession();
@@ -164,7 +171,7 @@ try {
 
 #### 使用注意事项
 
-2.0版本中inser、update、delete语句中的子查询语句中的表不支持sharding
+2.x版本中inser、update、delete语句中的子查询语句中的表不支持sharding
 
 select语句中如果进行多表关联，请务必为每个表名加上别名，例如原始sql语句：`SELECT a.* FROM ANTIQUES a, ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id`
 经过转换后的结果可能为：`SELECT a.* FROM ANTIQUES_0 AS a, ANTIQUEOWNERS_1 AS b, mytable_1 AS c WHERE a.id = b.id AND b.id = c.id`	
