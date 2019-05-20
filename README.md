@@ -7,7 +7,7 @@ What is shardbatis?
 # shardbatis2.x使用指南
 
 ### 运行环境
-jdk 6.0+  
+jdk 8.0
 mybatis 3.x
 
 ### 下载 & 安装
