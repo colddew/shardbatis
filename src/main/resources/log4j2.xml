@@ -8,6 +8,12 @@
     </Appenders>
 
     <Loggers>
+        <Logger name="org.apache.ibatis" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="java.sql" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
