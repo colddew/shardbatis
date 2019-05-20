@@ -117,7 +117,7 @@ public class DatasourceConfig {
 
 ### 实现自定义sharding策略
 
-实现ShardStrategy接，参考实现 ```java com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl```
+实现ShardStrategy接口，参考实现 ```java com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl```
 
 ```java
 /**
