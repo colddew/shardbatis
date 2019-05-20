@@ -25,7 +25,7 @@ mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/sh
 <dependency>
     <groupId>org.shardbatis</groupId>
     <artifactId>shardbatis</artifactId>
-    <version>2.0.0B</version>
+    <version>2.0.1-SNAPSHOT</version>
 </dependency>
 
 <!-- 由于googlecode已关闭远程仓库，已不可用 -->
@@ -117,7 +117,7 @@ public class DatasourceConfig {
 
 ### 实现自定义sharding策略
 
-实现ShardStrategy接，参考实现 ```java com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl```
+实现ShardStrategy接口，参考实现 [`com.google.code.shardbatis.strategy.impl.AppTestShardStrategyImpl`](https://github.com/colddew/shardbatis/blob/master/src/test/java/com/google/code/shardbatis/strategy/impl/AppTestShardStrategyImpl.java)
 
 ```java
 /**
@@ -129,7 +129,7 @@ public interface ShardStrategy {
      * @param baseTableName 逻辑表名,一般是没有前缀或者是后缀的表名
      * @param params mybatis执行某个statement时使用的参数
      * @param mapperId mybatis配置的statement id
-     * @return 实际表名
+     * @return 表名
      */
     String getTargetTableName(String baseTableName,Object params,String mapperId);
 }
@@ -201,6 +201,19 @@ delete from test_table2 where id in (?,?,?,?,?,?) and col_1 is not null
 INSERT INTO test_table1 VALUES (21, 01, 'Ottoman', ?,?)
 INSERT INTO test_table1 (BUYERID, SELLERID, ITEM) VALUES (01, 21, ?)
 ```
+
+### 测试
+安装并启动h2数据库
+```
+curl -O http://www.h2database.com/h2-2019-03-13.zip
+<h2-home>/bin/h2.sh
+```
+
+初始化h2数据库的schema以及测试数据
+`mvn -Pinitdb initialize`
+
+运行测试
+mvn clean test
 
 ### 未来计划
 1）升级依赖，替换jsqlparser本地依赖  

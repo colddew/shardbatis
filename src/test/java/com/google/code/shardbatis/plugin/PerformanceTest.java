@@ -5,10 +5,13 @@ package com.google.code.shardbatis.plugin;
 
 import java.io.Reader;
 
+import com.google.code.shardbatis.builder.ShardConfigHolder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -73,7 +76,7 @@ public class PerformanceTest {
 	 * -server -XX:-PrintCompilation -Xmx512m -Xms512m -Xmn256m
 	 * @throws Exception
 	 */
-//	@Ignore
+	@Ignore
 	@Test
 	public void testNoPlugin() throws Exception{
 		String resource = "MapperConfig_3.xml";
@@ -117,6 +120,9 @@ public class PerformanceTest {
 		
 		Thread.sleep(1000*60*20L);
 	}
-	
-	
+
+	@After
+	public void destory() throws Exception {
+		ShardConfigHolder.getInstance().reset();
+	}
 }

@@ -12,16 +12,17 @@ import com.google.code.shardbatis.strategy.ShardStrategy;
 
 /**
  * @author sean.he
- * 
+ * @author colddew
  */
 public class ShardConfigHolder {
+
 	private static final ShardConfigHolder instance = new ShardConfigHolder();
 
 	public static ShardConfigHolder getInstance() {
 		return instance;
 	}
 
-	private Map<String, ShardStrategy> strategyRegister = new HashMap<String, ShardStrategy>();
+	private Map<String, ShardStrategy> strategyRegister = new HashMap<>();
 
 	private Set<String> ignoreSet;
 	private Set<String> parseSet;
@@ -101,5 +102,15 @@ public class ShardConfigHolder {
 	 */
 	public boolean isIgnoreId(String id) {
 		return ignoreSet != null && ignoreSet.contains(id);
+	}
+
+	/**
+	 * 重置成员变量，该类可能存在线程安全问题
+	 * @since 2.0.1-SNAPSHOT
+	 */
+	public void reset() {
+		strategyRegister = new HashMap<>();
+		ignoreSet = null;
+		parseSet = null;
 	}
 }

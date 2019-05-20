@@ -2,10 +2,12 @@ package com.google.code.shardbatis.plugin;
 
 import java.io.Reader;
 
+import com.google.code.shardbatis.builder.ShardConfigHolder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,7 +24,7 @@ public class ShardPluginTest2 {
 		Reader reader = Resources.getResourceAsReader(resource);
 		sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 	}
-	
+
 	@Test
 	public void test_1() {
 		AppTestDO testDO = new AppTestDO();
@@ -38,7 +40,7 @@ public class ShardPluginTest2 {
 			session.close();
 		}
 	}
-	
+
 	@Test
 	public void test_2(){
 		AppTestDO testDO = new AppTestDO();
@@ -53,5 +55,10 @@ public class ShardPluginTest2 {
 		} finally {
 			session.close();
 		}
+	}
+
+	@AfterClass
+	public static void destory() throws Exception {
+		ShardConfigHolder.getInstance().reset();
 	}
 }

@@ -8,43 +8,24 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mybatis.version>3.5.1</mybatis.version>
+        <jsqlparser.version>2.0</jsqlparser.version>
+        <log4j.version>2.11.2</log4j.version>
+        <junit.version>4.12</junit.version>
+
         <jdbc.test.driver>org.h2.Driver</jdbc.test.driver>
-        <jdbc.test.url>jdbc:h2:tcp://localhost/~/sharebatis</jdbc.test.url>
-        <!--        <jdbc.test.url>jdbc:h2:mem:sharebatis;DB_CLOSE_DELAY=-1</jdbc.test.url>-->
+        <jdbc.test.url>jdbc:h2:tcp://localhost/~/shardbatis</jdbc.test.url>
+<!--        <jdbc.test.url>jdbc:h2:mem:shardbatis;DB_CLOSE_DELAY=-1</jdbc.test.url>-->
         <jdbc.test.user>sa</jdbc.test.user>
         <jdbc.test.password></jdbc.test.password>
+
         <jdbc.test.driver.groupid>com.h2database</jdbc.test.driver.groupid>
         <jdbc.test.driver.artifactId>h2</jdbc.test.driver.artifactId>
-        <jdbc.test.driver.version>1.2.140</jdbc.test.driver.version>
+        <jdbc.test.driver.version>1.4.199</jdbc.test.driver.version>
         <db.schema.file>src/test/resources/initdb.sql</db.schema.file>
     </properties>
 
-    <!-- 设定除中央仓库(repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查找. -->
-    <repositories>
-        <repository>
-            <id>offical</id>
-            <name>Maven Offical Repository</name>
-            <url>http://repo1.maven.org/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jboss</id>
-            <name>jboss repository</name>
-            <url>http://repository.jboss.com/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.1</version>
-        </dependency>
         <dependency>
             <groupId>net.sourceforge</groupId>
             <artifactId>jsqlparser</artifactId>
@@ -52,23 +33,34 @@
         </dependency>
 
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-            <scope>test</scope>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.github.jsqlparser</groupId>-->
+<!--            <artifactId>jsqlparser</artifactId>-->
+<!--            <version>${jsqlparser.version}</version>-->
+<!--        </dependency>-->
+
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.1</version>
-            <scope>test</scope>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>${jdbc.test.driver.groupid}</groupId>
             <artifactId>${jdbc.test.driver.artifactId}</artifactId>
             <version>${jdbc.test.driver.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -90,14 +82,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.2</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/.svn/</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
 
-            <!-- sql插件 -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
@@ -122,12 +108,10 @@
     </build>
 
     <profiles>
-        <!--初始化数据库Schema及测试数据的profile, 以-Pinitdb激活 command:mvn initialize -Pinitdb-->
         <profile>
             <id>initdb</id>
             <build>
                 <plugins>
-                    <!-- sql 插件创建Schema -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>sql-maven-plugin</artifactId>

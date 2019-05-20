@@ -2,10 +2,12 @@ package com.google.code.shardbatis.plugin;
 
 import java.io.Reader;
 
+import com.google.code.shardbatis.builder.ShardConfigHolder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,9 +18,9 @@ import com.google.code.shardbatis.test.mapper.AppTestMapper;
 /**
  * 运行测试前先启H2 TCP Server <br/>
  * 并执行mvn initialize -Pinitdb 进行数据初始化
- * 
+ *
  * @author sean.he
- * 
+ *
  */
 public class ShardPluginTest {
 
@@ -46,7 +48,7 @@ public class ShardPluginTest {
 			session.close();
 		}
 	}
-	
+
 	@Test
 	public void test_2(){
 		AppTestDO testDO = new AppTestDO();
@@ -62,7 +64,7 @@ public class ShardPluginTest {
 			session.close();
 		}
 	}
-	
+
 //	@Test
 //	public void test_3(){
 //		AppTestDO testDO = new AppTestDO();
@@ -78,7 +80,7 @@ public class ShardPluginTest {
 //			session.close();
 //		}
 //	}
-	
+
 	@Test
 	public void test_4(){
 		AppTestDO testDO = new AppTestDO();
@@ -93,5 +95,10 @@ public class ShardPluginTest {
 		} finally {
 			session.close();
 		}
+	}
+
+	@AfterClass
+	public static void destory() throws Exception {
+		ShardConfigHolder.getInstance().reset();
 	}
 }
