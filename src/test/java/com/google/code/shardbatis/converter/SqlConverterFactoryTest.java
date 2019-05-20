@@ -43,11 +43,10 @@ public class SqlConverterFactoryTest {
 	@Test
 	public void test_1() throws IOException, ShardException {
 		SqlConverterFactory cf = SqlConverterFactory.getInstance();
-		BufferedReader reader = new BufferedReader(Resources
-				.getResourceAsReader("sql_src.txt"));
+		BufferedReader reader = new BufferedReader(Resources.getResourceAsReader("sql_src.txt"));
 		String instring = null;
 
-		List<String> converted = new ArrayList<String>();
+		List<String> converted = new ArrayList<>();
 		while ((instring = reader.readLine()) != null) {
 			if (instring != null) {
 				String sql = cf.convert(instring, null, null);
@@ -55,9 +54,8 @@ public class SqlConverterFactoryTest {
 			}
 		}
 
-		List<String> expectList = new ArrayList<String>();
-		reader = new BufferedReader(Resources
-				.getResourceAsReader("sql_ret.txt"));
+		List<String> expectList = new ArrayList<>();
+		reader = new BufferedReader(Resources.getResourceAsReader("sql_ret.txt"));
 		instring = null;
 		while ((instring = reader.readLine()) != null) {
 			if (instring != null) {

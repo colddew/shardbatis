@@ -18,7 +18,6 @@
 <!--        <jdbc.test.url>jdbc:h2:mem:shardbatis;DB_CLOSE_DELAY=-1</jdbc.test.url>-->
         <jdbc.test.user>sa</jdbc.test.user>
         <jdbc.test.password></jdbc.test.password>
-
         <jdbc.test.driver.groupid>com.h2database</jdbc.test.driver.groupid>
         <jdbc.test.driver.artifactId>h2</jdbc.test.driver.artifactId>
         <jdbc.test.driver.version>1.4.199</jdbc.test.driver.version>
@@ -27,9 +26,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.sourceforge</groupId>
+            <groupId>com.github.jsqlparser</groupId>
             <artifactId>jsqlparser</artifactId>
-            <version>0.7.0</version>
+            <version>${jsqlparser.version}</version>
         </dependency>
 
         <dependency>
@@ -37,12 +36,6 @@
             <artifactId>mybatis</artifactId>
             <version>${mybatis.version}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.github.jsqlparser</groupId>-->
-<!--            <artifactId>jsqlparser</artifactId>-->
-<!--            <version>${jsqlparser.version}</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

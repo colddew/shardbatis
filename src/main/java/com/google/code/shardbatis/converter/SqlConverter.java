@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.google.code.shardbatis.converter;
 
 import net.sf.jsqlparser.statement.Statement;

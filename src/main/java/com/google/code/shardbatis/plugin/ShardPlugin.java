@@ -1,7 +1,16 @@
-/**
- * 
- */
 package com.google.code.shardbatis.plugin;
+
+import com.google.code.shardbatis.builder.ShardConfigHolder;
+import com.google.code.shardbatis.builder.ShardConfigParser;
+import com.google.code.shardbatis.converter.SqlConverterFactory;
+import com.google.code.shardbatis.util.ReflectionUtils;
+import org.apache.ibatis.executor.statement.RoutingStatementHandler;
+import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.plugin.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,50 +18,30 @@ import java.sql.Connection;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.ibatis.executor.statement.RoutingStatementHandler;
-import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Intercepts;
-import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.plugin.Plugin;
-import org.apache.ibatis.plugin.Signature;
-
-import com.google.code.shardbatis.builder.ShardConfigHolder;
-import com.google.code.shardbatis.builder.ShardConfigParser;
-import com.google.code.shardbatis.converter.SqlConverterFactory;
-import com.google.code.shardbatis.util.ReflectionUtils;
-
 /**
  * @author sean.he
  * @author colddew
  */
 @Intercepts( { @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class, Integer.class })})
 public class ShardPlugin implements Interceptor {
+
 	private static final Log log = LogFactory.getLog(ShardPlugin.class);
 
 	public static final String SHARDING_CONFIG = "shardingConfig";
 	
 	// ConcurrentHashMap<mapperId,needParse>
-	private static final ConcurrentHashMap<String, Boolean> cache = new ConcurrentHashMap<String, Boolean>();
+	private static final ConcurrentHashMap<String, Boolean> cache = new ConcurrentHashMap<>();
 
 	public Object intercept(Invocation invocation) throws Throwable {
 
-		StatementHandler statementHandler = (StatementHandler) invocation
-				.getTarget();
+		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
 		
 		MappedStatement mappedStatement = null;
 		if (statementHandler instanceof RoutingStatementHandler) {
-			StatementHandler delegate = (StatementHandler) ReflectionUtils
-					.getFieldValue(statementHandler, "delegate");
-			mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(
-					delegate, "mappedStatement");
+			StatementHandler delegate = (StatementHandler) ReflectionUtils.getFieldValue(statementHandler, "delegate");
+			mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(delegate, "mappedStatement");
 		} else {
-			mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(
-					statementHandler, "mappedStatement");
+			mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(statementHandler, "mappedStatement");
 		}
 
 		String mapperId = mappedStatement.getId();		
@@ -69,8 +58,7 @@ public class ShardPlugin implements Interceptor {
 			if (log.isDebugEnabled()) {
 				log.debug("Converted Sql [" + mapperId + "]:" + sql);
 			}
-			ReflectionUtils.setFieldValue(statementHandler
-					.getBoundSql(), "sql", sql);
+			ReflectionUtils.setFieldValue(statementHandler.getBoundSql(), "sql", sql);
 		}
 		return invocation.proceed();
 	}
@@ -83,8 +71,7 @@ public class ShardPlugin implements Interceptor {
 		// 解析配置文件
 		String config = properties.getProperty(SHARDING_CONFIG, null);
 		if (config == null || config.trim().length() == 0) {
-			throw new IllegalArgumentException(
-					"property 'shardingConfig' is requested.");
+			throw new IllegalArgumentException("property 'shardingConfig' is requested.");
 		}
 
 		ShardConfigParser parser = new ShardConfigParser();
@@ -113,11 +100,13 @@ public class ShardPlugin implements Interceptor {
 	}
 	
 	private boolean isShouldParse(String mapperId) {
+
 		Boolean parse = cache.get(mapperId);
 		
 		if (parse != null) {//已被缓存
 			return parse;
 		}
+
 		/*
 		 * 1.<selectKey>不做解析
 		 * 2.在ignoreList里的sql不用处理
@@ -130,17 +119,18 @@ public class ShardPlugin implements Interceptor {
 			ShardConfigHolder configHolder = ShardConfigHolder.getInstance();
 
 			if (!configHolder.isIgnoreId(mapperId)) {
-				if (!configHolder.isConfigParseId()
-						|| configHolder.isParseId(mapperId)) {
-
+				if (!configHolder.isConfigParseId()	|| configHolder.isParseId(mapperId)) {
 					parse = true;
 				}
 			}
 		}
+
 		if (parse == null) {
 			parse = false;
 		}
+
 		cache.put(mapperId, parse);
+
 		return parse;
 	}
 }

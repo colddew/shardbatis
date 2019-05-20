@@ -14,15 +14,16 @@ public class ReflectionUtils {
 
 	private static final Log logger = LogFactory.getLog(ReflectionUtils.class);
 
-
 	/**
 	 * 直接设置对象属性值,无视private/protected修饰符,不经过setter函数.
 	 */
 	public static void setFieldValue(final Object object, final String fieldName, final Object value) {
+
 		Field field = getDeclaredField(object, fieldName);
 
-		if (field == null)
+		if (field == null) {
 			throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
+		}
 
 		makeAccessible(field);
 
@@ -37,10 +38,12 @@ public class ReflectionUtils {
 	 * 直接读取对象属性值,无视private/protected修饰符,不经过getter函数.
 	 */
 	public static Object getFieldValue(final Object object, final String fieldName) {
+
 		Field field = getDeclaredField(object, fieldName);
 
-		if (field == null)
+		if (field == null) {
 			throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
+		}
 
 		makeAccessible(field);
 
@@ -50,17 +53,20 @@ public class ReflectionUtils {
 		} catch (IllegalAccessException e) {
 			
 		}
+
 		return result;
 	}
 
 	/**
 	 * 直接调用对象方法,无视private/protected修饰符.
 	 */
-	public static Object invokeMethod(final Object object, final String methodName, final Class<?>[] parameterTypes,
-			final Object[] parameters) throws InvocationTargetException {
+	public static Object invokeMethod(final Object object, final String methodName, final Class<?>[] parameterTypes, final Object[] parameters)
+			throws InvocationTargetException {
+
 		Method method = getDeclaredMethod(object, methodName, parameterTypes);
-		if (method == null)
+		if (method == null) {
 			throw new IllegalArgumentException("Could not find method [" + methodName + "] on target [" + object + "]");
+		}
 
 		method.setAccessible(true);
 
@@ -76,14 +82,16 @@ public class ReflectionUtils {
 	/**
 	 * 循环向上转型,获取对象的DeclaredField.
 	 */
-	protected static Field getDeclaredField(final Object object, final String fieldName) {		
-		for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass
-				.getSuperclass()) {
+	protected static Field getDeclaredField(final Object object, final String fieldName) {
+
+		for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
 			try {
 				return superClass.getDeclaredField(fieldName);
 			} catch (NoSuchFieldException e) {
+
 			}
 		}
+
 		return null;
 	}
 
@@ -100,14 +108,15 @@ public class ReflectionUtils {
 	 * 循环向上转型,获取对象的DeclaredMethod.
 	 */
 	protected static Method getDeclaredMethod(Object object, String methodName, Class<?>[] parameterTypes) {
-		for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass
-				.getSuperclass()) {
+
+		for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
 			try {
 				return superClass.getDeclaredMethod(methodName, parameterTypes);
 			} catch (NoSuchMethodException e) {
 
 			}
 		}
+
 		return null;
 	}
 
@@ -132,7 +141,6 @@ public class ReflectionUtils {
 	 * @param clazz The class to introspect
 	 * @return the first generic declaration, or Object.class if cannot be determined
 	 */
-	@SuppressWarnings("unchecked")
 	public static Class getSuperClassGenricType(final Class clazz, final int index) {
 
 		Type genType = clazz.getGenericSuperclass();
@@ -145,10 +153,10 @@ public class ReflectionUtils {
 		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
 		if (index >= params.length || index < 0) {
-			logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
-					+ params.length);
+			logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: " + params.length);
 			return Object.class;
 		}
+
 		if (!(params[index] instanceof Class)) {
 			logger.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
 			return Object.class;
@@ -157,15 +165,14 @@ public class ReflectionUtils {
 		return (Class) params[index];
 	}
 
-	
 	/**
 	 * 将反射时的checked exception转换为unchecked exception.
 	 */
 	public static IllegalArgumentException convertToUncheckedException(Exception e) {
-		if (e instanceof IllegalAccessException || e instanceof IllegalArgumentException
-				|| e instanceof NoSuchMethodException)
+		if (e instanceof IllegalAccessException || e instanceof IllegalArgumentException || e instanceof NoSuchMethodException) {
 			return new IllegalArgumentException("Refelction Exception.", e);
-		else
+		} else {
 			return new IllegalArgumentException(e);
+		}
 	}
 }

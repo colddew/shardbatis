@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.google.code.shardbatis.converter;
 
 import net.sf.jsqlparser.statement.Statement;
@@ -25,7 +22,7 @@ public abstract class AbstractSqlConverter implements SqlConverter {
 	 * @return
 	 */
 	protected String doDeParse(Statement statement) {
-		StatementDeParser deParser = new StatementDeParser(new StringBuffer());
+		StatementDeParser deParser = new StatementDeParser(new StringBuilder());
 		statement.accept(deParser);
 		return deParser.getBuffer().toString();
 	}
@@ -39,8 +36,7 @@ public abstract class AbstractSqlConverter implements SqlConverter {
 	 * @param mapperId
 	 * @return
 	 */
-	protected String convertTableName(String tableName, Object params,
-			String mapperId) {
+	protected String convertTableName(String tableName, Object params, String mapperId) {
 		ShardConfigHolder configFactory = ShardConfigHolder.getInstance();
 		ShardStrategy strategy = configFactory.getStrategy(tableName);
 		if (strategy == null) {
@@ -56,6 +52,5 @@ public abstract class AbstractSqlConverter implements SqlConverter {
 	 * @param mapperId
 	 * @return
 	 */
-	protected abstract Statement doConvert(Statement statement, Object params,
-			String mapperId);
+	protected abstract Statement doConvert(Statement statement, Object params, String mapperId);
 }

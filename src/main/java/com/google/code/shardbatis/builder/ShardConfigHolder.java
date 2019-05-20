@@ -105,7 +105,7 @@ public class ShardConfigHolder {
 	}
 
 	/**
-	 * 重置成员变量，该类可能存在线程安全问题
+	 * 重置成员变量，使用时避免多次加载不同的shard_config.xml文件，否则可能存在线程安全问题
 	 * @since 2.0.1-SNAPSHOT
 	 */
 	public void reset() {
