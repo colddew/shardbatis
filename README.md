@@ -210,6 +210,7 @@ INSERT INTO test_table1 (BUYERID, SELLERID, ITEM) VALUES (01, 21, ?)
 ```
 
 ### 测试
+
 安装并启动h2数据库
 ```
 curl -O http://www.h2database.com/h2-2019-03-13.zip
@@ -217,10 +218,12 @@ curl -O http://www.h2database.com/h2-2019-03-13.zip
 ```
 
 初始化h2数据库的schema以及测试数据
+
 `mvn -Pinitdb initialize`
 
 运行测试
-mvn clean test
+
+`mvn clean test`
 
 ### 未来计划
 1）升级依赖，替换jsqlparser本地依赖  
