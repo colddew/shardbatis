@@ -8,13 +8,13 @@ What is shardbatis?
 
 ### 运行环境
 jdk 8.0
-mybatis 3.5.1
+mybatis 3.x
 
 ### 下载 & 安装
 
 git clone https://github.com/colddew/shardbatis.git
 
-a）2.0.1以后的版本直接引入maven依赖即可
+a）2.0.1及以上的版本直接引入maven依赖即可
 
 ```xml
 <dependency>
@@ -24,7 +24,7 @@ a）2.0.1以后的版本直接引入maven依赖即可
 </dependency>
 ```
 
-b）2.0.0B及以前的版本需要将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库
+b）2.0.0B版本需要将repository目录下的shardbatis和jsqlparser导入maven本地仓库或者公司的二方库
 
 ```
 mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/shardbatis-2.0.0B.jar -DgroupId=org.shardbatis -DartifactId=shardbatis -Dversion=2.0.0B -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
@@ -37,7 +37,7 @@ mvn install:install-file -Dfile=./repository/org/shardbatis/shardbatis/2.0.0B/sh
     <version>2.0.0B</version>
 </dependency>
 
-<!-- 由于googlecode已关闭远程仓库，已不可用 -->
+<!-- 由于googlecode已关闭package仓库，已不可用 -->
 <repository>
     <id>shardbaits</id>
     <name>shardbaits repository</name>
@@ -171,7 +171,7 @@ try {
 
 #### 使用注意事项
 
-2.x版本中inser、update、delete语句中的子查询语句中的表不支持sharding
+2.x版本中insert、update、delete语句中的子查询语句中的表不支持sharding
 
 select语句中如果进行多表关联，请务必为每个表名加上别名，例如原始sql语句：`SELECT a.* FROM ANTIQUES a, ANTIQUEOWNERS b, mytable c where a.id=b.id and b.id=c.id`
 经过转换后的结果可能为：`SELECT a.* FROM ANTIQUES_0 AS a, ANTIQUEOWNERS_1 AS b, mytable_1 AS c WHERE a.id = b.id AND b.id = c.id`	
